@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import '../../../styles/movie.scss';
 import { useParams } from 'next/navigation';
 import { AspectRatio, Container, Divider, Flex, Grid, Group, Image, Space, Stack, Text, Title } from '@mantine/core';
-import { headers } from '../../../src/utils/api';
+import { getDataFromApi } from '../../../src/utils/api';
 import Favorites from '../../../src/components/favorites/favorites';
 
 const emptyInfo = {
@@ -40,17 +40,11 @@ export default function Movie() {
 
   const [trailer, setTrailer] = useState(false);
 
-  const fetchOptions = {
-    method: 'GET',
-    headers: headers,
-  };
-
   const getMovieInfo = async () => {
     if (!id) return;
     const baseURL = `https://api.themoviedb.org/3/movie/${id}?append_to_response=videos`;
     try {
-      let resp = await fetch(baseURL, fetchOptions);
-      let data = await resp.json();
+      const data = await getDataFromApi(baseURL);
       setMovieInfo(data);
     } catch (error) {
       console.log('Невозможно получить информацию о фильме!\n' + error);
