@@ -1,0 +1,18 @@
+.movie-info-card {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.movie-info-favorite {
+  cursor: pointer;
+}
+
+.movie-info-favorite:hover {
+  transform: scale(1.07);
+}
+
+.movie-info-trailer {
+  border: 0px;
+  border-radius: 9px;
+}

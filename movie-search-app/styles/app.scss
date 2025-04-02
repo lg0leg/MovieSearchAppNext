@@ -1,0 +1,35 @@
+@use './colors' as c;
+
+.title {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: c.$pr5;
+}
+
+.nav-item {
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+  color: c.$bk;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.nav-item.active {
+  font-weight: 700;
+  color: c.$pr5;
+  background-color: c.$pr2;
+}
+
+.no-access-alert {
+  margin-top: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
