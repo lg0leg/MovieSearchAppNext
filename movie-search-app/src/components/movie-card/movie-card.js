@@ -22,7 +22,6 @@ export default function MovieCard({ info, genres }) {
       <div
         className="movie-card"
         onClick={() => {
-          localStorage.setItem('currentMovieInfo', JSON.stringify(info));
           router.push(moviePath);
         }}
       >

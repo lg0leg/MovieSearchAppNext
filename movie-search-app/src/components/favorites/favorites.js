@@ -19,7 +19,8 @@ export default function Favorites({ info }) {
       setRating(favContext.favState.favoritesRating.find((el) => el.itemId === info.id).itemRating);
     }
   };
-  useEffect(checkFavorites, []);
+
+  useEffect(checkFavorites, [info]);
 
   const addItemToFavorites = () => {
     const rt = { itemId: info.id, itemRating: rating };

@@ -17,26 +17,25 @@ const emptyInfo = {
   overview: '-',
   popularity: 1,
   poster_path: '/noPoster.png',
-  release_date: '1111-11-11',
+  release_date: '',
   title: '-',
   video: false,
-  vote_average: 1,
-  vote_count: 1,
+  vote_average: 0,
+  vote_count: '-',
+  runtime: '',
+  budget: '',
+  revenue: '',
+  genres: [],
+  overview: '',
+  video: false,
+  videos: { results: [] },
 };
 
 export default function Movie() {
   const { id } = useParams();
-  const state = JSON.parse(localStorage.getItem('currentMovieInfo') || emptyInfo);
 
-  const [movieInfo, setMovieInfo] = useState({
-    runtime: '',
-    budget: '',
-    revenue: '',
-    genres: [],
-    overview: '',
-    video: false,
-    videos: { results: [] },
-  });
+  const [minInfo, setMinInfo] = useState(null);
+  const [movieInfo, setMovieInfo] = useState(emptyInfo);
 
   const [trailer, setTrailer] = useState(false);
 
@@ -70,6 +69,25 @@ export default function Movie() {
 
   useEffect(() => {
     checkTrailer();
+
+    const minObj = {
+      adult: movieInfo.adult,
+      backdrop_path: movieInfo.backdrop_path,
+      genre_ids: movieInfo.genres.map((item) => item.id),
+      id: movieInfo.id,
+      original_language: movieInfo.original_language,
+      original_title: movieInfo.original_title,
+      overview: movieInfo.overview,
+      popularity: movieInfo.popularity,
+      poster_path: movieInfo.poster_path,
+      release_date: movieInfo.release_date,
+      title: movieInfo.title,
+      video: movieInfo.video,
+      vote_average: movieInfo.vote_average,
+      vote_count: movieInfo.vote_count,
+    };
+
+    setMinInfo(minObj);
   }, [movieInfo]);
 
   const dateOptions = {
@@ -77,7 +95,7 @@ export default function Movie() {
     month: 'long',
     day: 'numeric',
   };
-  const date = new Date(state.release_date);
+  const date = new Date(movieInfo.release_date);
   const premiereDate = date.toLocaleString('en-US', dateOptions);
   const duration = `${Math.floor(movieInfo.runtime / 60)}h  ${movieInfo.runtime % 60}m`;
   const budget = `$${movieInfo.budget.toLocaleString()}`;
@@ -88,20 +106,20 @@ export default function Movie() {
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
       <Group className="movie-info-card" align="flex-start" w={800}>
         <AspectRatio ratio={250 / 352} w={250}>
-          <Image src={`https://image.tmdb.org/t/p/original/${state.poster_path}`} fallbackSrc="/noPoster.png" alt={`${state.original_title} poster`} />
+          <Image src={`https://image.tmdb.org/t/p/original/${movieInfo.poster_path}`} fallbackSrc="/noPoster.png" alt={`${movieInfo.original_title} poster`} />
         </AspectRatio>
         <Stack justify="space-between" h={352}>
           <Flex direction="column">
             <Title order={2} c={'#9854f6'}>
-              {state.original_title}
+              {movieInfo.original_title}
             </Title>
             <Text mt={8} mb={8} c={'#7b7c88'}>
-              {state.release_date.slice(0, 4)}
+              {movieInfo.release_date.slice(0, 4)}
             </Text>
             <Flex gap={7}>
               <img src="/star.svg" alt="star" width={22} />
-              <Text fw={600}>{state.vote_average.toFixed(1)}</Text>
-              <Text c={'#7b7c88'}>({state.vote_count})</Text>
+              <Text fw={600}>{movieInfo.vote_average.toFixed(1)}</Text>
+              <Text c={'#7b7c88'}>({movieInfo.vote_count})</Text>
             </Flex>
           </Flex>
           <Grid cols={2} w={442} gutter>
@@ -125,9 +143,7 @@ export default function Movie() {
             </Grid.Col>
           </Grid>
         </Stack>
-        <div className="movie-info-favorite">
-          <Favorites info={state} />
-        </div>
+        {minInfo && <div className="movie-info-favorite">{<Favorites info={minInfo} />}</div>}
       </Group>
       <Space h={20} />
       <Flex className="movie-info-card" direction="column" w={800}>
