@@ -1,1 +1,4 @@
 # MovieSearchAppNext
+
+
+![structure](structure.PNG)
