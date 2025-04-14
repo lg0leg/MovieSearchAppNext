@@ -5,6 +5,7 @@
   gap: 16px;
   background-color: #fff;
   border-radius: 10px;
+  max-width: 600px;
   cursor: pointer;
 
   p {
@@ -43,4 +44,35 @@
 
 .movie-star:hover {
   transform: scale(1.07);
+}
+
+.movie-card-bg-image {
+  display: none;
+}
+
+@media screen and (width < 500px) {
+  .movie-card {
+    padding: 16px;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  .movie-image {
+    display: none;
+  }
+
+  .movie-card-title {
+    font-size: 20px;
+    margin-right: 20px;
+  }
+
+  .movie-card-bg-image {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.3;
+  }
 }
