@@ -42,8 +42,8 @@ export default function RatedMovies() {
   return favContext.favState.favoritesId.length === 0 ? (
     <Center h="100vh">
       <Flex gap="16" justify="center" align="center" direction="column">
-        <img src="/loading.svg" alt="You haven't rated any films yet" />
-        <h2>You haven't rated any films yet</h2>
+        <img className="favorites-empty-image" src="/loading.svg" alt="You haven't rated any films yet" />
+        <h2 style={{ textAlign: 'center', padding: '16px' }}>You haven't rated any films yet</h2>
         <Button
           variant="filled"
           color="#9854f6"

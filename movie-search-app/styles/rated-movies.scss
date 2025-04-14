@@ -22,3 +22,9 @@
     grid-template-columns: repeat(1, minmax(min-content, auto));
   }
 }
+
+@media screen and (width < 500px) {
+  .favorites-empty-image {
+    width: 300px;
+  }
+}
