@@ -58,8 +58,8 @@ export default function RatedMovies() {
       </Flex>
     </Center>
   ) : (
-    <Container fluid style={{ width: 1160, paddingLeft: 90, paddingRight: 90, paddingTop: 40, margin: 0 }}>
-      <Flex justify={'space-between'} align={'center'}>
+    <Container fluid className="rated-movies-container ">
+      <Flex justify={'space-between'} align={'center'} wrap={'wrap'} gap={30}>
         <Title order={1}>Rated movies</Title>
         <TextInput
           className="search-input"
@@ -72,7 +72,7 @@ export default function RatedMovies() {
           radius="md"
         />
       </Flex>
-      <Space h="40" />
+      <Space h="16" />
       <div className="favorites-container">
         {searchQuery === ''
           ? favContext.favState.favoritesInfo.filter(pageFilter).map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
@@ -81,20 +81,22 @@ export default function RatedMovies() {
               .filter(pageFilter)
               .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)}
       </div>
-      <Pagination
-        size={'lg'}
-        defaultValue="1"
-        radius="sm"
-        color="rgb(152, 84, 246)"
-        value={page}
-        onChange={setPage}
-        total={totalPages}
-        styles={{
-          control: {
-            border: '1px solid rgb(213, 214, 220)',
-          },
-        }}
-      />
+      <Center>
+        <Pagination
+          size={'lg'}
+          defaultValue="1"
+          radius="sm"
+          color="rgb(152, 84, 246)"
+          value={page}
+          onChange={setPage}
+          total={totalPages}
+          styles={{
+            control: {
+              border: '1px solid rgb(213, 214, 220)',
+            },
+          }}
+        />
+      </Center>
     </Container>
   );
 }

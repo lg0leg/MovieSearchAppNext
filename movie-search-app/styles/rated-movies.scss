@@ -1,3 +1,9 @@
+.rated-movies-container {
+  max-width: calc(980px + 16px + 16px);
+  padding: 16px;
+  padding-top: 40px;
+}
+
 .favorites-container {
   padding-top: 24px;
   padding-bottom: 24px;
@@ -8,4 +14,11 @@
 
 .search-input input {
   border: 1px solid #eaebed;
+}
+
+@media screen and (width < 1200px) {
+  .favorites-container {
+    justify-content: center;
+    grid-template-columns: repeat(1, minmax(min-content, auto));
+  }
 }
