@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Container, Flex, Pagination, Select, Space, Title } from '@mantine/core';
+import { Container, Flex, Pagination, Select, Space, Text, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import '../../styles/movies.scss';
 import FilmList from '../../src/components/film-list/film-list';
@@ -67,27 +67,39 @@ export default function Movies() {
   const years = Array.from({ length: 100 }, (_, index) => String(2024 - index));
 
   return (
-    <Container fluid style={{ width: 1160, paddingLeft: 90, paddingRight: 90, paddingTop: 40, margin: 0 }}>
+    <Container fluid className="main-container">
       <Title order={1}>Movies</Title>
       <Space h="40" />
       <Flex gap="16" wrap="wrap" align="flex-end">
-        <Select className="filter-title" label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
-        <Select className="filter-title" label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
-        <Select
-          className="filter-title filter-title-short"
-          label="Ratings"
-          placeholder="From"
-          data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
-          value={ratingFrom}
-          onChange={setRatingFrom}
-        />
-        <Select className="filter-title filter-title-short" label=" " placeholder="To" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingTo} onChange={setRatingTo} />
-        <Button pb={10} variant="transparent" color="rgb(123, 124, 136)" onClick={resetFilters}>
+        <Select w="284" className="filter-title" label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
+        <Select w="284" className="filter-title" label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
+        <Flex gap="8" align="flex-end">
+          <Select
+            w="138"
+            className="filter-title filter-title-short"
+            label="Ratings"
+            placeholder="From"
+            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+            value={ratingFrom}
+            onChange={setRatingFrom}
+          />
+          <Select
+            w="138"
+            className="filter-title filter-title-short"
+            label=" "
+            placeholder="To"
+            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+            value={ratingTo}
+            onChange={setRatingTo}
+          />
+        </Flex>
+        <Text size="sm" pb={10} c="rgb(123, 124, 136)" onClick={resetFilters} className="reset-button">
           Reset filters
-        </Button>
+        </Text>
       </Flex>
-      <Flex style={{ marginTop: 10 }}>
+      <Flex style={{ marginTop: 18 }} justify={{ base: 'flex-start', xl: 'flex-end' }}>
         <Select
+          w="284"
           className="filter-title"
           label="Sort by"
           data={[
