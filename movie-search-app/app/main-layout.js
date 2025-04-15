@@ -1,18 +1,21 @@
 'use client';
 
 import React from 'react';
-import { AppShell, Alert, Badge, Flex, Space, Title } from '@mantine/core';
+import { AppShell, Alert, Badge, Flex, Space, Title, Burger } from '@mantine/core';
 import Link from 'next/link';
 import '../styles/app.scss';
 import { useEffect, useReducer, useState } from 'react';
 import { favReducer, initialFavState, FavContext } from '../src/state/state';
 import { usePathname } from 'next/navigation';
+import { useDisclosure } from '@mantine/hooks';
 
 export function MainLayout({ children }) {
   const pathname = usePathname();
 
   const [favState, favDispatch] = useReducer(favReducer, initialFavState);
   const [visibleAlert, setVisibleAlert] = useState(true);
+
+  const [opened, { toggle }] = useDisclosure();
 
   const hideAlert = () => {
     localStorage.setItem('visibleAlertLS', 'hidden');
@@ -36,10 +39,13 @@ export function MainLayout({ children }) {
       navbar={{
         width: 280,
         breakpoint: 'sm',
+        collapsed: { mobile: !opened },
       }}
       withBorder={false}
     >
       <AppShell.Navbar style={{ padding: '24px', backgroundColor: '#f2ecfa' }}>
+        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" lineSize={3} color="#9854f6" style={{ position: 'absolute', left: '0', top: '0' }} />
+        <Space h="20" hiddenFrom="sm" />
         <Link href="/movies" style={{ textDecoration: 'none' }}>
           <Flex gap={12}>
             <img src="/logo.svg" alt="logo" />
@@ -75,6 +81,7 @@ export function MainLayout({ children }) {
         </Alert>
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
+        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" lineSize={3} />
         <FavContext.Provider value={{ favDispatch, favState }}>{children}</FavContext.Provider>
       </AppShell.Main>
     </AppShell>

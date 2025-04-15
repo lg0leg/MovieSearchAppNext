@@ -2,7 +2,7 @@
 
 import './favorites.scss';
 import { Button, Modal, Rating, Space } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import { FavContext } from '../../state/state';
 import Star from '../star/star';
@@ -12,6 +12,8 @@ export default function Favorites({ info }) {
   const [favorite, setFavorite] = useState(false);
   const [rating, setRating] = useState(0);
   const [opened, { open, close }] = useDisclosure(false);
+
+  const isMobile = useMediaQuery('(max-width: 500px)');
 
   const checkFavorites = () => {
     if (favContext.favState.favoritesId.includes(info.id)) {
@@ -59,7 +61,7 @@ export default function Favorites({ info }) {
       >
         <hr color="#eaebed" />
         <h3>{info.original_title}</h3>
-        <Rating className="movie-stars-gap" value={rating} onChange={setRating} count="10" size="xl" />
+        <Rating className="movie-stars-gap" value={rating} onChange={setRating} count="10" size={isMobile ? 'md' : 'xl'} />
         <Space h={20} />
         <Button variant="filled" color="#9854f6" onClick={addItemToFavorites}>
           Save

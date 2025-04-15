@@ -1,3 +1,23 @@
+.main-container {
+  max-width: calc(980px + 16px + 16px);
+  padding: 16px;
+  padding-top: 40px;
+  // margin: 0;
+}
+
+.reset-button {
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 0.3;
+  }
+}
+
 .filter-title {
   color: rgb(172, 173, 185);
   font-family: Inter;

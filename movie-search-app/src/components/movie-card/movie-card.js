@@ -25,6 +25,7 @@ export default function MovieCard({ info, genres }) {
           router.push(moviePath);
         }}
       >
+        <Image className="movie-card-bg-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} fallbackSrc="/noPoster.png" alt={`poster`} />
         <Image className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} fallbackSrc="/noPoster.png" alt={`${info.original_title} poster`} />
         <div className="movie-card-inner">
           <h2 className="movie-card-title">{info.original_title}</h2>

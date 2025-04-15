@@ -5,3 +5,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
+
+@media screen and (width < 1200px) {
+  .movies-container {
+    grid-template-columns: 1fr;
+  }
+}
