@@ -1,10 +1,25 @@
 .movie-info-card {
+  position: relative;
   padding: 24px;
   background-color: #fff;
   border-radius: 10px;
+  overflow: hidden;
+}
+
+.movie-info-title {
+  margin-right: 30px;
+}
+
+.movie-info-details {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 7px;
 }
 
 .movie-info-favorite {
+  position: absolute;
+  top: 24px;
+  right: 24px;
   cursor: pointer;
 }
 
@@ -15,4 +30,38 @@
 .movie-info-trailer {
   border: 0px;
   border-radius: 9px;
+}
+
+.movie-info-bg-image {
+  display: none;
+}
+
+@media screen and (width < 1024px) {
+  .movie-info-card {
+    padding: 16px;
+  }
+
+  .movie-info-image {
+    display: none;
+  }
+
+  .movie-info-details {
+    grid-template-columns: 100px 1fr;
+  }
+
+  .movie-info-favorite {
+    top: 20px;
+    right: 16px;
+  }
+
+  .movie-info-bg-image {
+    height: 100%;
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.2;
+  }
 }
