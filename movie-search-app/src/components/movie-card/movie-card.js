@@ -4,10 +4,13 @@ import './movie-card.scss';
 import { Image, Space } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import Favorites from '../favorites/favorites';
+import { useMediaQuery } from '@mantine/hooks';
 
 export default function MovieCard({ info, genres }) {
   const router = useRouter();
   const moviePath = `/movies/${info.id}`;
+
+  const isMobile = useMediaQuery('(max-width: 500px)');
 
   //получение названий жанров из списка id отдельного фильма
   let genreTitles = genres
@@ -25,8 +28,11 @@ export default function MovieCard({ info, genres }) {
           router.push(moviePath);
         }}
       >
-        <Image className="movie-card-bg-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} fallbackSrc="/noPoster.png" alt={`poster`} />
-        <Image className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} fallbackSrc="/noPoster.png" alt={`${info.original_title} poster`} />
+        {isMobile ? (
+          <Image className="movie-card-bg-image" src={`https://image.tmdb.org/t/p/w500/${info.backdrop_path}`} fallbackSrc="/noPoster.png" alt={`poster`} />
+        ) : (
+          <Image className="movie-image" src={`https://image.tmdb.org/t/p/w500/${info.poster_path}`} fallbackSrc="/noPoster.png" alt={`${info.original_title} poster`} />
+        )}
         <div className="movie-card-inner">
           <h2 className="movie-card-title">{info.original_title}</h2>
           <p>{info.release_date.slice(0, 4)}</p>

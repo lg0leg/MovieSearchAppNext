@@ -15,7 +15,8 @@
 
 .movie-image {
   width: 120px;
-  aspect-ratio: 2 / 3;
+  // aspect-ratio: 2 / 3;
+  aspect-ratio: 119 / 170;
 }
 
 .movie-card-inner {
@@ -69,10 +70,9 @@
   .movie-card-bg-image {
     display: flex;
     position: absolute;
+    height: 100%;
     left: 0;
-    right: 0;
     top: 0;
-    bottom: 0;
     opacity: 0.3;
   }
 }

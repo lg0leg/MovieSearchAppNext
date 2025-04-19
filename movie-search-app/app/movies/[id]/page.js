@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { AspectRatio, Container, Divider, Flex, Group, Image, Space, Stack, Text, Title } from '@mantine/core';
 import { getDataFromApi } from '../../../src/utils/api';
 import Favorites from '../../../src/components/favorites/favorites';
+import { useMediaQuery } from '@mantine/hooks';
 
 const emptyInfo = {
   adult: false,
@@ -33,6 +34,8 @@ const emptyInfo = {
 
 export default function Movie() {
   const { id } = useParams();
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const [minInfo, setMinInfo] = useState(null);
   const [movieInfo, setMovieInfo] = useState(emptyInfo);
@@ -105,10 +108,13 @@ export default function Movie() {
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40, justifyItems: 'center' }}>
       <Group className="movie-info-card" align="flex-start" w={'100%'} maw={800} wrap="nowrap">
-        <Image className="movie-info-bg-image" src={`https://image.tmdb.org/t/p/original/${movieInfo.poster_path}`} fallbackSrc="/noPoster.png" alt={`poster`} />
-        <AspectRatio className="movie-info-image" ratio={250 / 352} w={250} miw={250}>
-          <Image src={`https://image.tmdb.org/t/p/original/${movieInfo.poster_path}`} fallbackSrc="/noPoster.png" alt={`${movieInfo.original_title} poster`} />
-        </AspectRatio>
+        {isMobile ? (
+          <Image className="movie-info-bg-image" src={`https://image.tmdb.org/t/p/w780/${movieInfo.backdrop_path}`} fallbackSrc="/noPoster.png" alt={`poster`} />
+        ) : (
+          <AspectRatio className="movie-info-image" ratio={250 / 352} w={250} miw={250}>
+            <Image src={`https://image.tmdb.org/t/p/w500/${movieInfo.poster_path}`} fallbackSrc="/noPoster.png" alt={`${movieInfo.original_title} poster`} />
+          </AspectRatio>
+        )}
         <Stack justify="space-between" mih={352}>
           <Flex direction="column">
             <Title className="movie-info-title" order={2} c={'#9854f6'} lineClamp={3}>
@@ -175,7 +181,7 @@ export default function Movie() {
             <Flex direction="column" gap={12}>
               {movieInfo.production_companies.map((item) => (
                 <Flex align={'center'} gap={8} key={item.id}>
-                  <Image fit="contain" h={40} w={40} radius={'50%'} src={`https://image.tmdb.org/t/p/original/${item.logo_path}`} fallbackSrc="/noVideo.png" alt={`${item.name} poster`} />
+                  <Image fit="contain" h={40} w={40} radius={'50%'} src={`https://image.tmdb.org/t/p/w185/${item.logo_path}`} fallbackSrc="/noVideo.png" alt={`${item.name} poster`} />
                   <Text fw={700}>{item.name}</Text>
                 </Flex>
               ))}
