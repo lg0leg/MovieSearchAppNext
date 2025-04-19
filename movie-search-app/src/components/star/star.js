@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
+import './star.scss';
 
 export default function Star({ favorite }) {
   return (
-    <svg width="28.000000" height="28.000000" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className="star-svg" width="28.000000" height="28.000000" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <clipPath id="clip18002_331">
           <rect id="star" width="28.000000" height="28.000000" fill="white" fillOpacity="0" />

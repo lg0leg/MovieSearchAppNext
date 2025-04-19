@@ -2,6 +2,11 @@
   gap: 10px;
 }
 
+.star-container {
+  width: 28px;
+  height: 28px;
+}
+
 @media screen and (width < 500px) {
   .movie-stars-gap {
     gap: 6px;

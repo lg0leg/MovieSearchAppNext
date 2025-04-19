@@ -1,7 +1,7 @@
 'use client';
 
 import './favorites.scss';
-import { Button, Modal, Rating, Space } from '@mantine/core';
+import { Button, Modal, Rating, Space, Stack, Text } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import { FavContext } from '../../state/state';
@@ -31,10 +31,12 @@ export default function Favorites({ info }) {
       favContext.favDispatch({ type: 'ADD_ID_TO_FAVORITES', payload: info.id });
       favContext.favDispatch({ type: 'ADD_ITEM_TO_FAVORITES', payload: info });
       favContext.favDispatch({ type: 'SET_RATING_FOR_ITEM', payload: rt });
+      close();
     } else {
       //обновление уже существующей оценки
       favContext.favDispatch({ type: 'REMOVE_RATING_FROM_ITEM', payload: info.id });
       favContext.favDispatch({ type: 'SET_RATING_FOR_ITEM', payload: rt });
+      close();
     }
   };
 
@@ -44,13 +46,21 @@ export default function Favorites({ info }) {
     favContext.favDispatch({ type: 'REMOVE_ID_FROM_FAVORITES', payload: info.id });
     favContext.favDispatch({ type: 'REMOVE_ITEM_FROM_FAVORITES', payload: info.id });
     favContext.favDispatch({ type: 'REMOVE_RATING_FROM_ITEM', payload: info.id });
+    close();
+  };
+
+  const closeModal = () => {
+    if (favContext.favState.favoritesId.includes(info.id)) {
+      setRating(favContext.favState.favoritesRating.find((el) => el.itemId === info.id).itemRating);
+    }
+    close();
   };
 
   return (
     <>
       <Modal
         opened={opened}
-        onClose={close}
+        onClose={closeModal}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -70,14 +80,18 @@ export default function Favorites({ info }) {
           Remove rating
         </Button>
       </Modal>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          open();
-        }}
-      >
-        <Star favorite={favorite} />
-      </div>
+      <Stack gap="0" align="center">
+        <div
+          className="star-container"
+          onClick={(e) => {
+            e.stopPropagation();
+            open();
+          }}
+        >
+          <Star favorite={favorite} />
+        </div>
+        {favorite && <Text fw={600}>{rating}</Text>}
+      </Stack>
     </>
   );
 }
