@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Flex, Pagination, Select, Space, Text, Title } from '@mantine/core';
+import { Container, Flex, Image, Pagination, Select, Space, Text, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import '../../styles/movies.scss';
 import FilmList from '../../src/components/film-list/film-list';
@@ -64,34 +64,28 @@ export default function Movies() {
     getMovies();
   }, [genres, releaseYear, ratingFrom, ratingTo, sort, page]);
 
-  const years = Array.from({ length: 100 }, (_, index) => String(2024 - index));
+  const years = Array.from({ length: 100 }, (_, index) => String(2030 - index));
+  const ds = <Image src={'./downSlash.svg'}></Image>;
+
+  const selectStyles = {
+    className: 'filter-title',
+    classNames: {
+      dropdown: 'filter-title-dropdown',
+      option: 'filter-title-option',
+    },
+    withCheckIcon: false,
+  };
 
   return (
     <Container fluid className="main-container">
       <Title order={1}>Movies</Title>
       <Space h="40" />
       <Flex gap="16" wrap="wrap" align="flex-end">
-        <Select w="284" className="filter-title" label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
-        <Select w="284" className="filter-title" label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
+        <Select w="284" {...selectStyles} rightSection={ds} label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
+        <Select w="284" {...selectStyles} rightSection={ds} label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
         <Flex gap="8" align="flex-end">
-          <Select
-            w="138"
-            className="filter-title filter-title-short"
-            label="Ratings"
-            placeholder="From"
-            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
-            value={ratingFrom}
-            onChange={setRatingFrom}
-          />
-          <Select
-            w="138"
-            className="filter-title filter-title-short"
-            label=" "
-            placeholder="To"
-            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
-            value={ratingTo}
-            onChange={setRatingTo}
-          />
+          <Select w="138" {...selectStyles} label="Ratings" placeholder="From" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingFrom} onChange={setRatingFrom} />
+          <Select w="138" {...selectStyles} label=" " placeholder="To" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingTo} onChange={setRatingTo} />
         </Flex>
         <Text size="sm" pb={10} c="rgb(123, 124, 136)" onClick={resetFilters} className="reset-button">
           Reset filters
@@ -100,12 +94,17 @@ export default function Movies() {
       <Flex style={{ marginTop: 18 }} justify={{ base: 'flex-start', xl: 'flex-end' }}>
         <Select
           w="284"
-          className="filter-title"
+          {...selectStyles}
           label="Sort by"
+          rightSection={ds}
           data={[
             { value: 'popularity.desc', label: 'Most popular' },
+            { value: 'popularity.asc', label: 'Least popular' },
+            { value: 'vote_average.desc', label: 'Most rated' },
+            { value: 'vote_average.asc', label: 'Least rated' },
+            { value: 'vote_count.desc', label: 'Most voted' },
+            { value: 'vote_count.asc', label: 'Least voted' },
             { value: 'title.desc', label: 'Title' },
-            { value: 'vote_average.desc', label: 'Rating' },
           ]}
           value={sort}
           onChange={(_value, option) => setSort(option.value)}

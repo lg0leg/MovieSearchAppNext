@@ -52,8 +52,25 @@
   align-items: center;
   padding: 8px 12px 8px 12px;
   margin-top: 8px;
+
+  &:hover {
+    border: 1px solid #9854f6;
+  }
 }
 
-.filter-title-short {
-  width: 130px;
+.filter-title-dropdown {
+  border-radius: 8px;
+}
+
+.filter-title-option {
+  border-radius: 8px;
+
+  &:hover {
+    background-color: #f2ebf9;
+  }
+
+  &:active {
+    background-color: #9854f6;
+    color: white;
+  }
 }
