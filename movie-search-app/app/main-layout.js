@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import { AppShell, Alert, Badge, Flex, Space, Title, Burger } from '@mantine/core';
+import { AppShell, Flex, Space, Title, Burger } from '@mantine/core';
 import Link from 'next/link';
 import '../styles/app.scss';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { favReducer, initialFavState, FavContext } from '../src/state/state';
+import NoAccessAlert from '../src/components/alert/alert';
 import { usePathname } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -13,24 +14,12 @@ export function MainLayout({ children }) {
   const pathname = usePathname();
 
   const [favState, favDispatch] = useReducer(favReducer, initialFavState);
-  const [visibleAlert, setVisibleAlert] = useState(true);
 
   const [opened, { toggle, close }] = useDisclosure();
 
   useEffect(() => {
     close();
   }, [pathname, close]);
-
-  const hideAlert = () => {
-    localStorage.setItem('visibleAlertLS', 'hidden');
-    setVisibleAlert(false);
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem('visibleAlertLS')) {
-      setVisibleAlert(false);
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem('favoritesId', JSON.stringify(favState.favoritesId));
@@ -67,22 +56,7 @@ export function MainLayout({ children }) {
             Rated movies
           </Link>
         </Flex>
-        <Alert
-          className="no-access-alert"
-          variant="light"
-          color="blue"
-          withCloseButton
-          closeButtonLabel="Dismiss"
-          title="Список фильмов пустой?"
-          hidden={!visibleAlert}
-          onClose={() => setVisibleAlert(false)}
-        >
-          Сервис TMDB может быть недоступен в некоторых регионах. Может быть, стоит попробовать открыть сайт по-другому?🤔
-          <Space h="10" />
-          <Badge className="pointer" variant="light" fullWidth size="sm" radius="sm" onClick={hideAlert}>
-            Больше не показывать
-          </Badge>
-        </Alert>
+        <NoAccessAlert />
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" lineSize={3} />
