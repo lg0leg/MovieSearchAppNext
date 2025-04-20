@@ -15,7 +15,11 @@ export function MainLayout({ children }) {
   const [favState, favDispatch] = useReducer(favReducer, initialFavState);
   const [visibleAlert, setVisibleAlert] = useState(true);
 
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
+
+  useEffect(() => {
+    close();
+  }, [pathname, close]);
 
   const hideAlert = () => {
     localStorage.setItem('visibleAlertLS', 'hidden');
