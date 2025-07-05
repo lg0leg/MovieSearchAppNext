@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '../src/test-utils';
 import NotFoundPage from './not-found';
 
-jest.mock('next/router', () => require('next-router-mock'));
+// jest.mock('next/router', () => require('next-router-mock'));
 
 describe('NotFoundPage component', () => {
   it('Renders <NotFoundPage /> component correctly', () => {

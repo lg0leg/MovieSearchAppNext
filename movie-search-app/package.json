@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "printf '\u001bc' && jest"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

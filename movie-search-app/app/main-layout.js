@@ -37,7 +37,16 @@ export function MainLayout({ children }) {
       withBorder={false}
     >
       <AppShell.Navbar style={{ padding: '24px', backgroundColor: '#f2ecfa' }}>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" lineSize={3} color="#9854f6" style={{ position: 'absolute', left: '0', top: '0' }} />
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="sm"
+          size="sm"
+          lineSize={3}
+          color="#9854f6"
+          style={{ position: 'absolute', left: '0', top: '0' }}
+          data-testid="app-burger"
+        />
         <Space h="20" hiddenFrom="sm" />
         <Link href="/movies" style={{ textDecoration: 'none' }}>
           <Flex gap={12}>
@@ -59,7 +68,7 @@ export function MainLayout({ children }) {
         <NoAccessAlert />
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" lineSize={3} />
+        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" lineSize={3} data-testid="app-burger" />
         <FavContext.Provider value={{ favDispatch, favState }}>{children}</FavContext.Provider>
       </AppShell.Main>
     </AppShell>

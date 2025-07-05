@@ -19,10 +19,28 @@ export default function NoAccessAlert() {
   }, []);
 
   return (
-    <Alert mt={'auto'} variant="light" color="blue" withCloseButton closeButtonLabel="Dismiss" title="Список фильмов пустой?" hidden={!visibleAlert} onClose={() => setVisibleAlert(false)}>
+    <Alert
+      mt={'auto'}
+      variant="light"
+      color="blue"
+      withCloseButton
+      closeButtonLabel="Dismiss"
+      title="Список фильмов пустой?"
+      hidden={!visibleAlert}
+      onClose={() => setVisibleAlert(false)}
+      data-testid="no-acc-alert"
+    >
       Сервис TMDB может быть недоступен в некоторых регионах. Может быть, стоит попробовать открыть сайт по-другому?🤔
       <Space h="10" />
-      <Badge style={{ cursor: 'pointer' }} variant="light" fullWidth size="sm" radius="sm" onClick={hideAlert}>
+      <Badge
+        style={{ cursor: 'pointer' }}
+        variant="light"
+        fullWidth
+        size="sm"
+        radius="sm"
+        onClick={hideAlert}
+        data-testid="hide-alert"
+      >
         Больше не показывать
       </Badge>
     </Alert>
