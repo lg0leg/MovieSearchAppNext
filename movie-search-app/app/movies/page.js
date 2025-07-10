@@ -21,7 +21,8 @@ export default function Movies() {
 
   //получение информации о фильмах с учетом фильтров, 20 штук на страницу
   const getMovies = async () => {
-    const baseURL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US';
+    const baseURL =
+      'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US';
     let year = releaseYear ? `&primary_release_year=${releaseYear}` : '';
     let rf = ratingFrom ? `&vote_average.gte=${ratingFrom}` : '';
     let rt = ratingTo ? `&vote_average.lte=${ratingTo}` : '';
@@ -81,13 +82,47 @@ export default function Movies() {
       <Title order={1}>Movies</Title>
       <Space h="40" />
       <Flex gap="16" wrap="wrap" align="flex-end">
-        <Select w="284" {...selectStyles} rightSection={ds} label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
-        <Select w="284" {...selectStyles} rightSection={ds} label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
+        <Select
+          w="284"
+          {...selectStyles}
+          rightSection={ds}
+          label="Genres"
+          placeholder="Select genre"
+          data={genresList.map((val) => val.name)}
+          value={genres}
+          onChange={setGenres}
+        />
+        <Select
+          w="284"
+          {...selectStyles}
+          rightSection={ds}
+          label="Release year"
+          placeholder="Select release year"
+          data={years}
+          value={releaseYear}
+          onChange={setReleaseYear}
+        />
         <Flex gap="8" align="flex-end">
-          <Select w="138" {...selectStyles} label="Ratings" placeholder="From" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingFrom} onChange={setRatingFrom} />
-          <Select w="138" {...selectStyles} label=" " placeholder="To" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingTo} onChange={setRatingTo} />
+          <Select
+            w="138"
+            {...selectStyles}
+            label="Ratings"
+            placeholder="From"
+            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+            value={ratingFrom}
+            onChange={setRatingFrom}
+          />
+          <Select
+            w="138"
+            {...selectStyles}
+            label=" "
+            placeholder="To"
+            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+            value={ratingTo}
+            onChange={setRatingTo}
+          />
         </Flex>
-        <Text size="sm" pb={10} c="rgb(123, 124, 136)" onClick={resetFilters} className="reset-button">
+        <Text size="sm" pb={10} c="rgb(123, 124, 136)" onClick={resetFilters} className="reset-button" role="button">
           Reset filters
         </Text>
       </Flex>
