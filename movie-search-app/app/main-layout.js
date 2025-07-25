@@ -48,7 +48,7 @@ export function MainLayout({ children }) {
           data-testid="app-burger"
         />
         <Space h="20" hiddenFrom="sm" />
-        <Link href="/movies" style={{ textDecoration: 'none' }}>
+        <Link href="/movies" style={{ textDecoration: 'none' }} data-testid="logo-link">
           <Flex gap={12}>
             <img src="/logo.svg" alt="logo" />
             <Title order={2} className="title">
@@ -58,10 +58,18 @@ export function MainLayout({ children }) {
         </Link>
         <Space h="80" />
         <Flex gap={16} direction="column">
-          <Link href="/movies" className={pathname == '/movies' ? 'nav-item active ' : 'nav-item'}>
+          <Link
+            href="/movies"
+            className={pathname == '/movies' ? 'nav-item active ' : 'nav-item'}
+            data-testid="movies-link"
+          >
             Movies
           </Link>
-          <Link href="/rated-movies" className={pathname == '/rated-movies' ? 'nav-item active ' : 'nav-item'}>
+          <Link
+            href="/rated-movies"
+            className={pathname == '/rated-movies' ? 'nav-item active ' : 'nav-item'}
+            data-testid="rated-movies-link"
+          >
             Rated movies
           </Link>
         </Flex>
