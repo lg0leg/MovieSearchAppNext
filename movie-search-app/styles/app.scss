@@ -1,7 +1,7 @@
 @use './colors' as c;
 
 .title {
-  font-family: 'Poppins';
+  font-family: var(--font-poppins) !important ;
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
