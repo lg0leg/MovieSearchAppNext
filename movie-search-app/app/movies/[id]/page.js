@@ -57,9 +57,15 @@ export default function Movie() {
   const checkTrailer = () => {
     if (movieInfo.videos.results.length > 0) {
       if (movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer').length > 0) {
-        setTrailer(`https://www.youtube.com/embed/${movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer')[0].key}`);
+        setTrailer(
+          `https://www.youtube.com/embed/${
+            movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer')[0].key
+          }`
+        );
       } else {
-        setTrailer(`https://www.youtube.com/embed/${movieInfo.videos.results.filter((mov) => mov.type === 'Trailer')[0].key}`);
+        setTrailer(
+          `https://www.youtube.com/embed/${movieInfo.videos.results.filter((mov) => mov.type === 'Trailer')[0].key}`
+        );
       }
     }
   };
@@ -109,10 +115,19 @@ export default function Movie() {
     <Container style={{ paddingTop: 40, paddingBottom: 40, justifyItems: 'center' }}>
       <Group className="movie-info-card" align="flex-start" w={'100%'} maw={800} wrap="nowrap">
         {isMobile ? (
-          <Image className="movie-info-bg-image" src={`https://image.tmdb.org/t/p/w780/${movieInfo.backdrop_path}`} fallbackSrc="/noPoster.png" alt={`poster`} />
+          <Image
+            className="movie-info-bg-image"
+            src={`https://image.tmdb.org/t/p/w780/${movieInfo.backdrop_path}`}
+            fallbackSrc="/noPoster.png"
+            alt={`poster`}
+          />
         ) : (
           <AspectRatio className="movie-info-image" ratio={250 / 352} w={250} miw={250}>
-            <Image src={`https://image.tmdb.org/t/p/w500/${movieInfo.poster_path}`} fallbackSrc="/noPoster.png" alt={`${movieInfo.original_title} poster`} />
+            <Image
+              src={`https://image.tmdb.org/t/p/w500/${movieInfo.poster_path}`}
+              fallbackSrc="/noPoster.png"
+              alt={`${movieInfo.original_title} poster`}
+            />
           </AspectRatio>
         )}
         <Stack justify="space-between" mih={352}>
@@ -181,7 +196,15 @@ export default function Movie() {
             <Flex direction="column" gap={12}>
               {movieInfo.production_companies.map((item) => (
                 <Flex align={'center'} gap={8} key={item.id}>
-                  <Image fit="contain" h={40} w={40} radius={'50%'} src={`https://image.tmdb.org/t/p/w185/${item.logo_path}`} fallbackSrc="/noVideo.png" alt={`${item.name} poster`} />
+                  <Image
+                    fit="contain"
+                    h={40}
+                    w={40}
+                    radius={'50%'}
+                    src={`https://image.tmdb.org/t/p/w185/${item.logo_path}`}
+                    fallbackSrc="/noVideo.png"
+                    alt={`${item.name} poster`}
+                  />
                   <Text fw={700}>{item.name}</Text>
                 </Flex>
               ))}
