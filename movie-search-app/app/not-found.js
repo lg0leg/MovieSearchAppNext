@@ -1,6 +1,9 @@
 import { Button, Center, Flex, Space, Text } from '@mantine/core';
 import Link from 'next/link';
-import React from 'react';
+
+export const metadata = {
+  title: '404',
+};
 
 export default function NotFoundPage() {
   return (

@@ -23,6 +23,7 @@ export default function RatedMovies() {
   useEffect(() => {
     const genres = JSON.parse(localStorage.getItem('genresList') || '[]');
     setGenresLS(genres);
+    document.title = 'Rated movies | ArrowFlicks';
   }, []);
 
   useEffect(() => {
@@ -75,7 +76,9 @@ export default function RatedMovies() {
       <Space h="16" />
       <div className="favorites-container">
         {searchQuery === ''
-          ? favContext.favState.favoritesInfo.filter(pageFilter).map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
+          ? favContext.favState.favoritesInfo
+              .filter(pageFilter)
+              .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
           : favContext.favState.favoritesInfo
               .filter(searchFilter)
               .filter(pageFilter)

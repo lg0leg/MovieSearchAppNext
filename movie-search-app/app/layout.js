@@ -5,7 +5,11 @@ import { theme } from '../theme';
 import { inter, poppins } from '../src/fonts/fonts';
 
 export const metadata = {
-  title: 'ArrowFlicks',
+  // title: 'ArrowFlicks',
+  title: {
+    template: '%s | ArrowFlicks',
+    default: 'ArrowFlicks',
+  },
   description: 'Movie database application',
 };
 

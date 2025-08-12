@@ -97,6 +97,7 @@ export default function Movie() {
     };
 
     setMinInfo(minObj);
+    document.title = `${movieInfo.original_title} | ArrowFlicks`;
   }, [movieInfo]);
 
   const dateOptions = {

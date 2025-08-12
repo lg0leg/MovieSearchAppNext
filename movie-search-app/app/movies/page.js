@@ -59,6 +59,7 @@ export default function Movies() {
 
   useEffect(() => {
     getGenres();
+    document.title = 'Movies | ArrowFlicks';
   }, []);
 
   useEffect(() => {
