@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FavContext } from '../../src/state/state';
 import MovieCard from '../../src/components/movie-card/movie-card';
+import RatingPie from '../../src/components/diagrams/rating-pie';
 import '../../styles/rated-movies.scss';
 
 export default function RatedMovies() {
@@ -16,6 +17,13 @@ export default function RatedMovies() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   let itemPerPage = 4;
+
+  const [ratingData, setRatingData] = useState(null); //для диаграммы
+  const [userSelectedRating, setUserSelectedRating] = useState(null);
+
+  useEffect(() => {
+    console.log('выбрал ' + userSelectedRating);
+  }, [userSelectedRating]);
 
   const searchFilter = (item) => item.original_title.toLowerCase().includes(searchQuery.toLowerCase());
   const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
@@ -35,6 +43,22 @@ export default function RatedMovies() {
   useEffect(() => {
     setPage(1);
   }, [totalPages]);
+
+  useEffect(() => {
+    const ratingCounts = {};
+    favContext.favState.favoritesRating.forEach((item) => {
+      const rating = item.itemRating;
+      ratingCounts[rating] = (ratingCounts[rating] || 0) + 1;
+    });
+
+    const chartData = Object.entries(ratingCounts).map(([rating, count]) => ({
+      // id: `Rating ${rating}`,
+      id: rating,
+      value: count,
+    }));
+
+    setRatingData(chartData);
+  }, [favContext.favState.favoritesRating]);
 
   const searchHandler = (event) => {
     setSearchQuery(event.currentTarget.value);
@@ -84,6 +108,7 @@ export default function RatedMovies() {
               .filter(pageFilter)
               .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)}
       </div>
+
       <Center>
         <Pagination
           size={'lg'}
@@ -100,6 +125,39 @@ export default function RatedMovies() {
           }}
         />
       </Center>
+
+      <Flex pt="10" gap="md" wrap="wrap">
+        <div
+          style={{
+            flex: 1,
+            height: '250px',
+            minWidth: '250px',
+            textAlign: 'center',
+            // overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <Title order={4} className="pie-title">
+            Rating
+          </Title>
+          <RatingPie data={ratingData} handler={setUserSelectedRating} />
+        </div>
+        <div
+          style={{
+            flex: 1,
+            height: '250px',
+            minWidth: '250px',
+            textAlign: 'center',
+            // overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <Title order={4} className="pie-title">
+            Genres
+          </Title>
+          <RatingPie data={ratingData} handler={setUserSelectedRating} />
+        </div>
+      </Flex>
     </Container>
   );
 }
