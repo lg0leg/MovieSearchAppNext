@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FavContext } from '../../src/state/state';
 import MovieCard from '../../src/components/movie-card/movie-card';
 import RatingPie from '../../src/components/diagrams/rating-pie';
+import GenresBar from '../../src/components/diagrams/genres-bar';
 import '../../styles/rated-movies.scss';
 
 export default function RatedMovies() {
@@ -18,12 +19,19 @@ export default function RatedMovies() {
   const [totalPages, setTotalPages] = useState(1);
   let itemPerPage = 4;
 
-  const [ratingData, setRatingData] = useState(null); //для диаграммы
+  const [ratingData, setRatingData] = useState(null); //для диаграммы оценок
   const [userSelectedRating, setUserSelectedRating] = useState(null);
+
+  const [genresData, setGenresData] = useState(null); //для диаграммы жанров
+  const [userSelectedGenre, setUserSelectedGenre] = useState(null);
 
   useEffect(() => {
     console.log('выбрал ' + userSelectedRating);
   }, [userSelectedRating]);
+
+  useEffect(() => {
+    console.log('выбрал ' + userSelectedGenre);
+  }, [userSelectedGenre]);
 
   const searchFilter = (item) => item.original_title.toLowerCase().includes(searchQuery.toLowerCase());
   const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
@@ -63,6 +71,35 @@ export default function RatedMovies() {
   const searchHandler = (event) => {
     setSearchQuery(event.currentTarget.value);
   };
+
+  //del
+  const genData = [
+    {
+      genre: 'Action',
+      count: 10,
+      id: 1,
+    },
+    {
+      genre: 'Adventure',
+      count: 15,
+      id: 2,
+    },
+    {
+      genre: 'Comedy',
+      count: 12,
+      id: 3,
+    },
+    {
+      genre: 'Drama',
+      count: 20,
+      id: 4,
+    },
+    {
+      genre: 'Thriller',
+      count: 15,
+      id: 5,
+    },
+  ];
 
   return favContext.favState.favoritesId.length === 0 ? (
     <Center h="100vh">
@@ -142,7 +179,24 @@ export default function RatedMovies() {
           </Title>
           <RatingPie data={ratingData} handler={setUserSelectedRating} />
         </div>
+
         <div
+          style={{
+            flex: 1,
+            height: '250px',
+            minWidth: '300px',
+            textAlign: 'center',
+            // overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <Title order={4} className="bar-title">
+            Genres
+          </Title>
+          <GenresBar data={genData} handler={setUserSelectedGenre} />
+        </div>
+
+        {/* <div
           style={{
             flex: 1,
             height: '250px',
@@ -156,7 +210,7 @@ export default function RatedMovies() {
             Genres
           </Title>
           <RatingPie data={ratingData} handler={setUserSelectedRating} />
-        </div>
+        </div> */}
       </Flex>
     </Container>
   );

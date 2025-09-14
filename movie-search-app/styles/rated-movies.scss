@@ -23,6 +23,13 @@
   transform: translateX(-50%) translateY(-40%);
 }
 
+.bar-title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 @media screen and (width < 1200px) {
   .favorites-container {
     justify-content: center;

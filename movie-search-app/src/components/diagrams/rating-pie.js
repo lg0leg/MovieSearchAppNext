@@ -50,6 +50,9 @@ const RatingPie = ({ data, handler }) => (
       const { id, value, color, data } = node;
       handler(id);
     }}
+    onMouseEnter={(_, event) => {
+      event.currentTarget.style.cursor = 'pointer';
+    }}
   />
 );
 
