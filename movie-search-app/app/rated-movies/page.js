@@ -7,6 +7,7 @@ import { FavContext } from '../../src/state/state';
 import MovieCard from '../../src/components/movie-card/movie-card';
 import RatingPie from '../../src/components/diagrams/rating-pie';
 import GenresBar from '../../src/components/diagrams/genres-bar';
+import basicGenresList from '../../src/utils/genres-list';
 import '../../styles/rated-movies.scss';
 
 export default function RatedMovies() {
@@ -68,38 +69,33 @@ export default function RatedMovies() {
     setRatingData(chartData);
   }, [favContext.favState.favoritesRating]);
 
+  useEffect(() => {
+    const genreCounts = {};
+    favContext.favState.favoritesInfo.forEach((movie) => {
+      if (movie.genre_ids && Array.isArray(movie.genre_ids)) {
+        movie.genre_ids.forEach((genreId) => {
+          const genresArr = genresLS.length > 0 ? genresLS : basicGenresList;
+          const genreName = genresArr.find((item) => item.id === genreId).name || `Unknown`;
+          genreCounts[genreName] = (genreCounts[genreName] || 0) + 1;
+        });
+      }
+    });
+
+    const barData = Object.entries(genreCounts)
+      .sort((a, b) => a[1] - b[1])
+      .slice(-5)
+      .map(([genre, value]) => ({
+        id: genre,
+        genre,
+        count: value,
+      }));
+
+    setGenresData(barData);
+  }, [favContext.favState.favoritesInfo, genresLS]);
+
   const searchHandler = (event) => {
     setSearchQuery(event.currentTarget.value);
   };
-
-  //del
-  const genData = [
-    {
-      genre: 'Action',
-      count: 10,
-      id: 1,
-    },
-    {
-      genre: 'Adventure',
-      count: 15,
-      id: 2,
-    },
-    {
-      genre: 'Comedy',
-      count: 12,
-      id: 3,
-    },
-    {
-      genre: 'Drama',
-      count: 20,
-      id: 4,
-    },
-    {
-      genre: 'Thriller',
-      count: 15,
-      id: 5,
-    },
-  ];
 
   return favContext.favState.favoritesId.length === 0 ? (
     <Center h="100vh">
@@ -184,16 +180,16 @@ export default function RatedMovies() {
           style={{
             flex: 1,
             height: '250px',
-            minWidth: '300px',
+            minWidth: '280px',
             textAlign: 'center',
             // overflow: 'hidden',
             position: 'relative',
           }}
         >
           <Title order={4} className="bar-title">
-            Genres
+            Top genres
           </Title>
-          <GenresBar data={genData} handler={setUserSelectedGenre} />
+          <GenresBar data={genresData} handler={setUserSelectedGenre} />
         </div>
 
         {/* <div

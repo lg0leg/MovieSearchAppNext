@@ -8,10 +8,11 @@ const GenresBar = ({ data, handler }) => (
     layout="horizontal"
     sortBy="value"
     sortAscending={false}
-    margin={{ top: 20, right: 20, bottom: 10, left: 100 }}
+    margin={{ top: 20, right: 20, bottom: 10, left: 120 }}
     padding={0.3}
     colors={({ index }) => {
-      const customColors = ['#9854F6', '#BD93F7', '#D1B4F8', '#E5D5FA', '#F2ECFA'];
+      // const customColors = ['#9854F6', '#BD93F7', '#D1B4F8', '#E5D5FA', '#F2ECFA'];
+      const customColors = ['#F2ECFA', '#E5D5FA', '#D1B4F8', '#BD93F7', '#9854F6'];
       return customColors[index % customColors.length];
     }}
     borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -35,6 +36,14 @@ const GenresBar = ({ data, handler }) => (
           {tick.value}
         </text>
       ),
+    }}
+    theme={{
+      labels: {
+        text: {
+          fontSize: 18,
+          fontWeight: 'bold',
+        },
+      },
     }}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 2.5]] }}
     animate={true}
