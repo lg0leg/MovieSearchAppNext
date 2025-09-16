@@ -14,6 +14,7 @@ export default function RatedMovies() {
   const favContext = useContext(FavContext);
   const router = useRouter();
   const [genresLS, setGenresLS] = useState([]);
+  const [isEmptyPage, setIsEmptyPage] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -25,6 +26,14 @@ export default function RatedMovies() {
 
   const [genresData, setGenresData] = useState(null); //для диаграммы жанров
   const [userSelectedGenre, setUserSelectedGenre] = useState(null);
+
+  useEffect(() => {
+    if (favContext.favState.favoritesId.length > 0) {
+      setIsEmptyPage(false);
+    } else {
+      setIsEmptyPage(true);
+    }
+  }, [favContext.favState.favoritesId]);
 
   useEffect(() => {
     console.log('выбрал ' + userSelectedRating);
@@ -97,7 +106,7 @@ export default function RatedMovies() {
     setSearchQuery(event.currentTarget.value);
   };
 
-  return favContext.favState.favoritesId.length === 0 ? (
+  return isEmptyPage ? (
     <Center h="100vh">
       <Flex gap="16" justify="center" align="center" direction="column">
         <img className="favorites-empty-image" src="/loading.svg" alt="You haven't rated any films yet" />
