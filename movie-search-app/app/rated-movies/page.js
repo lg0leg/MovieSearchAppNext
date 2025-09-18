@@ -27,6 +27,9 @@ export default function RatedMovies() {
   const [genresData, setGenresData] = useState(null); //для диаграммы жанров
   const [userSelectedGenre, setUserSelectedGenre] = useState(null);
 
+  const [mainContent, setMainContent] = useState(favContext.favState.favoritesInfo);
+
+  //фикс гидратации
   useEffect(() => {
     if (favContext.favState.favoritesId.length > 0) {
       setIsEmptyPage(false);
@@ -35,33 +38,60 @@ export default function RatedMovies() {
     }
   }, [favContext.favState.favoritesId]);
 
-  useEffect(() => {
-    console.log('выбрал ' + userSelectedRating);
-  }, [userSelectedRating]);
-
-  useEffect(() => {
-    console.log('выбрал ' + userSelectedGenre);
-  }, [userSelectedGenre]);
-
   const searchFilter = (item) => item.original_title.toLowerCase().includes(searchQuery.toLowerCase());
   const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
 
+  //фильтрация карточек под выбранные параметры
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      const data = favContext.favState.favoritesInfo.filter(searchFilter);
+      setMainContent(data);
+      setTotalPages(Math.ceil(data.length / itemPerPage));
+    } else {
+      setMainContent(favContext.favState.favoritesInfo);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (userSelectedRating) {
+      const arr = favContext.favState.favoritesRating
+        .filter((val) => val.itemRating == userSelectedRating)
+        .map((obj) => obj.itemId);
+      const data = favContext.favState.favoritesInfo.filter((item) => arr.includes(item.id));
+      setMainContent(data);
+      setTotalPages(Math.ceil(data.length / itemPerPage));
+    }
+  }, [userSelectedRating]);
+
+  useEffect(() => {
+    if (userSelectedGenre) {
+      const genresArr = genresLS.length > 0 ? genresLS : basicGenresList;
+      const idFromName = genresArr.find((item) => item.name === userSelectedGenre).id;
+      const data = favContext.favState.favoritesInfo.filter((item) => item.genre_ids.includes(idFromName));
+      setMainContent(data);
+      setTotalPages(Math.ceil(data.length / itemPerPage));
+    }
+  }, [userSelectedGenre]);
+
+  //загрузка списка жанров
   useEffect(() => {
     const genres = JSON.parse(localStorage.getItem('genresList') || '[]');
     setGenresLS(genres);
     document.title = 'Rated movies | ArrowFlicks';
   }, []);
 
+  //обновление пагинации
   useEffect(() => {
-    searchQuery === ''
-      ? setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage))
-      : setTotalPages(Math.ceil(favContext.favState.favoritesInfo.filter(searchFilter).length / itemPerPage));
+    if (searchQuery === '' && !userSelectedRating && !userSelectedGenre) {
+      setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
+    }
   }, [favContext.favState.favoritesId.length, favContext.favState.favoritesInfo, itemPerPage, searchQuery]);
 
   useEffect(() => {
     setPage(1);
   }, [totalPages]);
 
+  //обновление диаграмм
   useEffect(() => {
     const ratingCounts = {};
     favContext.favState.favoritesRating.forEach((item) => {
@@ -70,7 +100,6 @@ export default function RatedMovies() {
     });
 
     const chartData = Object.entries(ratingCounts).map(([rating, count]) => ({
-      // id: `Rating ${rating}`,
       id: rating,
       value: count,
     }));
@@ -139,16 +168,44 @@ export default function RatedMovies() {
           radius="md"
         />
       </Flex>
+
+      <Flex pt="20" gap="md" wrap="wrap">
+        <div
+          style={{
+            flex: 1,
+            height: '250px',
+            minWidth: '250px',
+            textAlign: 'center',
+            position: 'relative',
+          }}
+        >
+          <Title order={4} className="pie-title">
+            Rating
+          </Title>
+          <RatingPie data={ratingData} handler={setUserSelectedRating} />
+        </div>
+
+        <div
+          style={{
+            flex: 2,
+            height: '250px',
+            minWidth: '280px',
+            textAlign: 'center',
+            position: 'relative',
+          }}
+        >
+          <Title order={4} className="bar-title">
+            Top genres
+          </Title>
+          <GenresBar data={genresData} handler={setUserSelectedGenre} />
+        </div>
+      </Flex>
+
       <Space h="16" />
       <div className="favorites-container">
-        {searchQuery === ''
-          ? favContext.favState.favoritesInfo
-              .filter(pageFilter)
-              .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
-          : favContext.favState.favoritesInfo
-              .filter(searchFilter)
-              .filter(pageFilter)
-              .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)}
+        {mainContent.filter(pageFilter).map((item) => (
+          <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>
+        ))}
       </div>
 
       <Center>
@@ -167,56 +224,6 @@ export default function RatedMovies() {
           }}
         />
       </Center>
-
-      <Flex pt="10" gap="md" wrap="wrap">
-        <div
-          style={{
-            flex: 1,
-            height: '250px',
-            minWidth: '250px',
-            textAlign: 'center',
-            // overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <Title order={4} className="pie-title">
-            Rating
-          </Title>
-          <RatingPie data={ratingData} handler={setUserSelectedRating} />
-        </div>
-
-        <div
-          style={{
-            flex: 1,
-            height: '250px',
-            minWidth: '280px',
-            textAlign: 'center',
-            // overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <Title order={4} className="bar-title">
-            Top genres
-          </Title>
-          <GenresBar data={genresData} handler={setUserSelectedGenre} />
-        </div>
-
-        {/* <div
-          style={{
-            flex: 1,
-            height: '250px',
-            minWidth: '250px',
-            textAlign: 'center',
-            // overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <Title order={4} className="pie-title">
-            Genres
-          </Title>
-          <RatingPie data={ratingData} handler={setUserSelectedRating} />
-        </div> */}
-      </Flex>
     </Container>
   );
 }
