@@ -3,7 +3,7 @@ import { ResponsivePie } from '@nivo/pie';
 const RatingPie = ({ data, handler }) => (
   <ResponsivePie
     data={data}
-    margin={{ top: 0, right: 10, bottom: 0, left: 10 }}
+    margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
     innerRadius={0.4}
     padAngle={4}
     cornerRadius={6}

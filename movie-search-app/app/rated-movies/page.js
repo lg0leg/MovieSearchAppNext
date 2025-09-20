@@ -5,8 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FavContext } from '../../src/state/state';
 import MovieCard from '../../src/components/movie-card/movie-card';
-import RatingPie from '../../src/components/diagrams/rating-pie';
-import GenresBar from '../../src/components/diagrams/genres-bar';
+import RatedMoviesDiagrams from '../../src/components/diagrams/rated-movies-diagrams';
 import basicGenresList from '../../src/utils/genres-list';
 import '../../styles/rated-movies.scss';
 
@@ -21,10 +20,7 @@ export default function RatedMovies() {
   const [totalPages, setTotalPages] = useState(1);
   let itemPerPage = 4;
 
-  const [ratingData, setRatingData] = useState(null); //для диаграммы оценок
   const [userSelectedRating, setUserSelectedRating] = useState(null);
-
-  const [genresData, setGenresData] = useState(null); //для диаграммы жанров
   const [userSelectedGenre, setUserSelectedGenre] = useState(null);
 
   const [mainContent, setMainContent] = useState(favContext.favState.favoritesInfo);
@@ -42,18 +38,25 @@ export default function RatedMovies() {
   const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
 
   //фильтрация карточек под выбранные параметры
+  const setDefault = () => {
+    setMainContent(favContext.favState.favoritesInfo);
+    setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
+    setUserSelectedRating(null);
+    setUserSelectedGenre(null);
+    setSearchQuery('');
+  };
+
   useEffect(() => {
     if (searchQuery.length > 0) {
       const data = favContext.favState.favoritesInfo.filter(searchFilter);
       setMainContent(data);
       setTotalPages(Math.ceil(data.length / itemPerPage));
-    } else {
-      setMainContent(favContext.favState.favoritesInfo);
-    }
+    } else setDefault();
   }, [searchQuery]);
 
   useEffect(() => {
     if (userSelectedRating) {
+      setUserSelectedGenre(null);
       const arr = favContext.favState.favoritesRating
         .filter((val) => val.itemRating == userSelectedRating)
         .map((obj) => obj.itemId);
@@ -65,6 +68,7 @@ export default function RatedMovies() {
 
   useEffect(() => {
     if (userSelectedGenre) {
+      setUserSelectedRating(null);
       const genresArr = genresLS.length > 0 ? genresLS : basicGenresList;
       const idFromName = genresArr.find((item) => item.name === userSelectedGenre).id;
       const data = favContext.favState.favoritesInfo.filter((item) => item.genre_ids.includes(idFromName));
@@ -81,55 +85,13 @@ export default function RatedMovies() {
   }, []);
 
   //обновление пагинации
-  useEffect(() => {
-    if (searchQuery === '' && !userSelectedRating && !userSelectedGenre) {
-      setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
-    }
-  }, [favContext.favState.favoritesId.length, favContext.favState.favoritesInfo, itemPerPage, searchQuery]);
+  // useEffect(() => {
+  //   setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
+  // }, [favContext.favState.favoritesId.length, favContext.favState.favoritesInfo, itemPerPage]);
 
   useEffect(() => {
     setPage(1);
   }, [totalPages]);
-
-  //обновление диаграмм
-  useEffect(() => {
-    const ratingCounts = {};
-    favContext.favState.favoritesRating.forEach((item) => {
-      const rating = item.itemRating;
-      ratingCounts[rating] = (ratingCounts[rating] || 0) + 1;
-    });
-
-    const chartData = Object.entries(ratingCounts).map(([rating, count]) => ({
-      id: rating,
-      value: count,
-    }));
-
-    setRatingData(chartData);
-  }, [favContext.favState.favoritesRating]);
-
-  useEffect(() => {
-    const genreCounts = {};
-    favContext.favState.favoritesInfo.forEach((movie) => {
-      if (movie.genre_ids && Array.isArray(movie.genre_ids)) {
-        movie.genre_ids.forEach((genreId) => {
-          const genresArr = genresLS.length > 0 ? genresLS : basicGenresList;
-          const genreName = genresArr.find((item) => item.id === genreId).name || `Unknown`;
-          genreCounts[genreName] = (genreCounts[genreName] || 0) + 1;
-        });
-      }
-    });
-
-    const barData = Object.entries(genreCounts)
-      .sort((a, b) => a[1] - b[1])
-      .slice(-5)
-      .map(([genre, value]) => ({
-        id: genre,
-        genre,
-        count: value,
-      }));
-
-    setGenresData(barData);
-  }, [favContext.favState.favoritesInfo, genresLS]);
 
   const searchHandler = (event) => {
     setSearchQuery(event.currentTarget.value);
@@ -169,39 +131,15 @@ export default function RatedMovies() {
         />
       </Flex>
 
-      <Flex pt="20" gap="md" wrap="wrap">
-        <div
-          style={{
-            flex: 1,
-            height: '250px',
-            minWidth: '250px',
-            textAlign: 'center',
-            position: 'relative',
-          }}
-        >
-          <Title order={4} className="pie-title">
-            Rating
-          </Title>
-          <RatingPie data={ratingData} handler={setUserSelectedRating} />
-        </div>
-
-        <div
-          style={{
-            flex: 2,
-            height: '250px',
-            minWidth: '280px',
-            textAlign: 'center',
-            position: 'relative',
-          }}
-        >
-          <Title order={4} className="bar-title">
-            Top genres
-          </Title>
-          <GenresBar data={genresData} handler={setUserSelectedGenre} />
-        </div>
-      </Flex>
+      <RatedMoviesDiagrams
+        genresLS={genresLS}
+        setUserSelectedRating={setUserSelectedRating}
+        setUserSelectedGenre={setUserSelectedGenre}
+        setDefault={setDefault}
+      />
 
       <Space h="16" />
+
       <div className="favorites-container">
         {mainContent.filter(pageFilter).map((item) => (
           <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>
