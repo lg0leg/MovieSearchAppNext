@@ -1,0 +1,42 @@
+.yt-trailer-container {
+  position: relative;
+  width: 288px;
+  cursor: pointer;
+}
+
+.new-trailers-youtube-logo {
+  position: absolute;
+  top: 80%;
+  left: 85%;
+  transform: translateX(-50%) translateY(-50%) scale(0.5);
+  // opacity: 0;
+  opacity: 0.7;
+  transition: 0.4s;
+}
+
+.yt-trailer-container:hover > .new-trailers-youtube-logo {
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  opacity: 1;
+  transition: 0.4s;
+}
+
+.new-trailers-poster {
+  border-radius: 10px;
+  transition: 0.2s;
+  aspect-ratio: 16/9;
+}
+
+.yt-trailer-container:hover > .new-trailers-poster {
+  border-radius: 7px;
+  transform: scale(1.07);
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.new-trailers-trailer {
+  border: 0;
+  border-radius: 20px;
+}

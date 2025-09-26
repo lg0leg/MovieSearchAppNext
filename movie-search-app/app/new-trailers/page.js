@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { getDataFromApi } from '../../src/utils/api';
-import { AspectRatio, Center, Container, Flex, Space, Title } from '@mantine/core';
+import YoutubeContainer from '../../src/components/youtube-container/youtube-container';
+import { AspectRatio, Container, Flex, Image, Space, Title } from '@mantine/core';
 import '../../styles/new-trailers.scss';
 
 export default function NewTrailers() {
@@ -16,18 +17,18 @@ export default function NewTrailers() {
       // setTrailersList(data.results);
       const trailersIds = data.results.map((obj) => obj.id);
       trailersIds.forEach(async (id) => {
-        const videosURL = `https://api.themoviedb.org/3//movie/${id}/videos`;
+        const videosURL = `https://api.themoviedb.org/3/movie/${id}/videos`;
         const videosData = await getDataFromApi(videosURL);
         const offTrailers = videosData.results.filter(
           (mov) => mov.name === 'Official Trailer' && mov.site === 'YouTube'
         );
-
         if (offTrailers.length > 0) {
-          console.log('url - ' + offTrailers[0].key);
-          setTrailerURLList((prev) => [...prev, offTrailers[0].key]);
-        } else {
-          console.log('No trailer');
+          const obj = { id: id, url: offTrailers[0].key };
+          setTrailerURLList((prev) => (prev.some((item) => item.id === id) ? prev : [...prev, obj]));
         }
+        // else {
+        //   console.log('No trailer');
+        // }
       });
     } catch (error) {
       console.log('Невозможно получить список трейлеров!\n' + error);
@@ -43,26 +44,17 @@ export default function NewTrailers() {
   //   console.log(trailersList);
   // }, [trailersList]);
 
-  useEffect(() => {
-    console.log(trailerURLList);
-  }, [trailerURLList]);
+  // useEffect(() => {
+  //   console.log(trailerURLList);
+  // }, [trailerURLList]);
 
   return (
     <Container fluid className="new-trailers-container">
       <Title order={1}>New trailers</Title>
       <Space h={24} />
-      <Flex gap={20} wrap="wrap" justify="center">
-        {trailerURLList.map((url) => (
-          <AspectRatio ratio={16 / 9} miw={310} key={url}>
-            <iframe
-              className="new-trailers-trailer"
-              src={`https://www.youtube.com/embed/${url}`}
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </AspectRatio>
+      <Flex gap={16} wrap="wrap" justify="center">
+        {trailerURLList.map((obj) => (
+          <YoutubeContainer obj={obj} key={obj.id} />
         ))}
       </Flex>
     </Container>
