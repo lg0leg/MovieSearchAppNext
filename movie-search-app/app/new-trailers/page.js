@@ -3,18 +3,19 @@
 import React, { useEffect, useState } from 'react';
 import { getDataFromApi } from '../../src/utils/api';
 import YoutubeContainer from '../../src/components/youtube-container/youtube-container';
-import { AspectRatio, Container, Flex, Image, Space, Title } from '@mantine/core';
+import { Button, Center, Container, Flex, Space, Title } from '@mantine/core';
 import '../../styles/new-trailers.scss';
 
 export default function NewTrailers() {
-  const [trailersList, setTrailersList] = useState([]);
   const [trailerURLList, setTrailerURLList] = useState([]);
+  const [page, setPage] = useState(1);
 
   const getTrailers = async () => {
-    const baseURL = 'https://api.themoviedb.org/3/movie/now_playing';
+    const baseURL = `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${page}`;
+    // const baseURL = 'https://api.themoviedb.org/3/movie/now_playing';
+
     try {
       const data = await getDataFromApi(baseURL);
-      // setTrailersList(data.results);
       const trailersIds = data.results.map((obj) => obj.id);
       trailersIds.forEach(async (id) => {
         const videosURL = `https://api.themoviedb.org/3/movie/${id}/videos`;
@@ -38,15 +39,13 @@ export default function NewTrailers() {
 
   useEffect(() => {
     getTrailers();
-  }, []);
+  }, [page]);
 
-  // useEffect(() => {
-  //   console.log(trailersList);
-  // }, [trailersList]);
-
-  // useEffect(() => {
-  //   console.log(trailerURLList);
-  // }, [trailerURLList]);
+  const loadMore = () => {
+    if (page < 5) {
+      setPage(page + 1);
+    }
+  };
 
   return (
     <Container fluid className="new-trailers-container">
@@ -57,6 +56,21 @@ export default function NewTrailers() {
           <YoutubeContainer obj={obj} key={obj.id} />
         ))}
       </Flex>
+      <Space h={24} />
+      {trailerURLList.length > 0 ? (
+        <Center>
+          <Button
+            variant="light"
+            color="#9854f6"
+            size="md"
+            w="300"
+            onClick={loadMore}
+            disabled={page < 5 ? false : true}
+          >
+            Load more
+          </Button>
+        </Center>
+      ) : null}
     </Container>
   );
 }
