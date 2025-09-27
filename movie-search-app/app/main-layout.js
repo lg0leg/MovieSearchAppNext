@@ -72,6 +72,13 @@ export function MainLayout({ children }) {
           >
             Rated movies
           </Link>
+          <Link
+            href="/new-trailers"
+            className={pathname == '/new-trailers' ? 'nav-item active ' : 'nav-item'}
+            data-testid="new-trailers-link"
+          >
+            New trailers
+          </Link>
         </Flex>
         <NoAccessAlert />
       </AppShell.Navbar>
