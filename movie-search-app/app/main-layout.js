@@ -79,6 +79,13 @@ export function MainLayout({ children }) {
           >
             New trailers
           </Link>
+          <Link
+            href="/search"
+            className={pathname == '/search' ? 'nav-item active ' : 'nav-item'}
+            data-testid="search-link"
+          >
+            Search
+          </Link>
         </Flex>
         <NoAccessAlert />
       </AppShell.Navbar>
