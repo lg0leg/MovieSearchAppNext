@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { AspectRatio, Image, Modal } from '@mantine/core';
+import { AspectRatio, Button, Image, Modal } from '@mantine/core';
 import './youtube-container.scss';
 
 export default function YoutubeContainer({ obj }) {
@@ -51,6 +51,11 @@ export default function YoutubeContainer({ obj }) {
             allowFullScreen
           ></iframe>
         </AspectRatio>
+        {isMobile && (
+          <Button variant="subtle" onClick={close}>
+            Close
+          </Button>
+        )}
       </Modal>
     </>
   ) : (
