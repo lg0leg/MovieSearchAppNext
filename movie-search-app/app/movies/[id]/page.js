@@ -56,15 +56,21 @@ export default function Movie() {
 
   const checkTrailer = () => {
     if (movieInfo.videos.results.length > 0) {
-      if (movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer').length > 0) {
+      if (
+        movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer' && mov.site === 'YouTube').length > 0
+      ) {
         setTrailer(
           `https://www.youtube.com/embed/${
-            movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer')[0].key
+            movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer' && mov.site === 'YouTube')[0].key
           }`
         );
-      } else {
+      } else if (
+        movieInfo.videos.results.filter((mov) => mov.type === 'Trailer' && mov.site === 'YouTube').length > 0
+      ) {
         setTrailer(
-          `https://www.youtube.com/embed/${movieInfo.videos.results.filter((mov) => mov.type === 'Trailer')[0].key}`
+          `https://www.youtube.com/embed/${
+            movieInfo.videos.results.filter((mov) => mov.type === 'Trailer' && mov.site === 'YouTube')[0].key
+          }`
         );
       }
     }
