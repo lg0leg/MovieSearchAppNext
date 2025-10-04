@@ -20,7 +20,7 @@ import { getDataFromApi } from '../../../src/utils/api';
 import { useMediaQuery } from '@mantine/hooks';
 import '../../../styles/tvinfo.scss';
 
-export default function Series() {
+export default function TVinfo() {
   const { id } = useParams();
 
   const isMobile = useMediaQuery('(max-width: 1024px)');
@@ -28,7 +28,7 @@ export default function Series() {
   const [tvInfo, setTVInfo] = useState(null);
   const [trailer, setTrailer] = useState(false);
 
-  const getSeriesInfo = async () => {
+  const getTVInfo = async () => {
     if (!id) return;
     const baseURL = `https://api.themoviedb.org/3/tv/${id}?append_to_response=videos`;
 
@@ -61,7 +61,7 @@ export default function Series() {
 
   useEffect(() => {
     if (id) {
-      getSeriesInfo();
+      getTVInfo();
     }
   }, [id]);
 
