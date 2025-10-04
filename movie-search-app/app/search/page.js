@@ -116,6 +116,7 @@ export default function Search() {
               <Text
                 c="#541f9d"
                 {...(searchType == 'movie' && { component: Link, href: `/movies/${obj.id}`, target: '_blank' })}
+                {...(searchType == 'tv' && { component: Link, href: `/tv/${obj.id}`, target: '_blank' })}
               >
                 {/* <Text c="#541f9d" component={Link} href={`/movies/${obj.id}`}> */}
                 {obj.release_date
