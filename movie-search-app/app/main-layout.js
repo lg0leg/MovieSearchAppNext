@@ -86,13 +86,6 @@ export function MainLayout({ children }) {
           >
             Search
           </Link>
-          <Link
-            href="/profile"
-            className={pathname == '/profile' ? 'nav-item active ' : 'nav-item'}
-            data-testid="profile-link"
-          >
-            Profile
-          </Link>
         </Flex>
         <NoAccessAlert />
       </AppShell.Navbar>
