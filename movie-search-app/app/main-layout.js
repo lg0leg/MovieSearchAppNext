@@ -10,6 +10,13 @@ import NoAccessAlert from '../src/components/alert/alert';
 import { usePathname } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
 
+const links = [
+  { href: 'movies', label: 'Movies' },
+  { href: 'rated-movies', label: 'Rated movies' },
+  { href: 'new-trailers', label: 'New trailers' },
+  { href: 'search', label: 'Search' },
+];
+
 export function MainLayout({ children }) {
   const pathname = usePathname();
 
@@ -58,34 +65,16 @@ export function MainLayout({ children }) {
         </Link>
         <Space h="80" />
         <Flex gap={16} direction="column">
-          <Link
-            href="/movies"
-            className={pathname == '/movies' ? 'nav-item active ' : 'nav-item'}
-            data-testid="movies-link"
-          >
-            Movies
-          </Link>
-          <Link
-            href="/rated-movies"
-            className={pathname == '/rated-movies' ? 'nav-item active ' : 'nav-item'}
-            data-testid="rated-movies-link"
-          >
-            Rated movies
-          </Link>
-          <Link
-            href="/new-trailers"
-            className={pathname == '/new-trailers' ? 'nav-item active ' : 'nav-item'}
-            data-testid="new-trailers-link"
-          >
-            New trailers
-          </Link>
-          <Link
-            href="/search"
-            className={pathname == '/search' ? 'nav-item active ' : 'nav-item'}
-            data-testid="search-link"
-          >
-            Search
-          </Link>
+          {links.map((link, idx) => (
+            <Link
+              key={idx}
+              href={link.href}
+              className={pathname == `/${link.href}` ? 'nav-item active ' : 'nav-item'}
+              data-testid={`${link.href}-link`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </Flex>
         <NoAccessAlert />
       </AppShell.Navbar>
