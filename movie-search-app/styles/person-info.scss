@@ -1,0 +1,49 @@
+.person-Info-card {
+  position: relative;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.person-Info-title {
+  margin-right: 30px;
+}
+
+.person-Info-details {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 7px;
+}
+
+.person-Info-bg-image {
+  display: none;
+}
+
+.person-Info-link {
+  text-decoration: none;
+  color: #541f9d;
+}
+
+@media screen and (width < 1024px) {
+  .person-Info-card {
+    padding: 16px;
+  }
+
+  .person-Info-image {
+    display: none;
+  }
+
+  .person-Info-details {
+    grid-template-columns: 100px 1fr;
+  }
+
+  .person-Info-bg-image {
+    height: 100%;
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.2;
+  }
+}

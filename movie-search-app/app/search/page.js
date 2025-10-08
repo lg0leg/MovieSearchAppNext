@@ -86,13 +86,13 @@ export default function Search() {
       <Flex align="center">
         <SegmentedControl
           size="xs"
-          w={100}
+          w={150}
           value={searchType}
           onChange={setSearchType}
           data={[
             { label: 'Movie', value: 'movie' },
             { label: 'TV', value: 'tv' },
-            // { label: 'Person', value: 'person' },
+            { label: 'Person', value: 'person' },
           ]}
         />
         <Switch
@@ -117,15 +117,18 @@ export default function Search() {
                 c="#541f9d"
                 {...(searchType == 'movie' && { component: Link, href: `/movies/${obj.id}`, target: '_blank' })}
                 {...(searchType == 'tv' && { component: Link, href: `/tv/${obj.id}`, target: '_blank' })}
+                {...(searchType == 'person' && { component: Link, href: `/person/${obj.id}`, target: '_blank' })}
               >
-                {/* <Text c="#541f9d" component={Link} href={`/movies/${obj.id}`}> */}
-                {obj.release_date
-                  ? `${obj.original_title || obj.original_name} (${obj.release_date.slice(0, 4)})`
-                  : obj.first_air_date
-                  ? `${obj.original_title || obj.original_name} (${obj.first_air_date.slice(0, 4)})`
-                  : `${obj.original_title || obj.original_name}`}
+                {searchType == 'movie' && `${obj.original_title} (${obj.release_date?.slice(0, 4)})`}
+                {searchType == 'tv' && `${obj.original_name} (${obj.first_air_date?.slice(0, 4)})`}
+                {searchType == 'person' && `${obj.name} ${obj.adult ? '🍓' : ''}`}
               </Text>
               <Text size="sm">{obj.overview} </Text>
+              {searchType == 'person' && (
+                <Text size="sm">
+                  {obj.known_for?.map((val) => `"${val.original_title || val.original_name}"`).join(', ')}
+                </Text>
+              )}
             </Paper>
             <Space h="10" />
           </Box>
