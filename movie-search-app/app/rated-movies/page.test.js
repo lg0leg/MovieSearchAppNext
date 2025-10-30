@@ -7,6 +7,32 @@ jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock('@nivo/pie', () => ({
+  ResponsivePie: (props) => {
+    return {
+      $$typeof: Symbol.for('react.element'),
+      type: 'div',
+      key: null,
+      ref: null,
+      props: { 'data-testid': 'responsive-pie' },
+      _owner: null,
+    };
+  },
+}));
+
+jest.mock('@nivo/bar', () => ({
+  ResponsiveBar: (props) => {
+    return {
+      $$typeof: Symbol.for('react.element'),
+      type: 'div',
+      key: null,
+      ref: null,
+      props: { 'data-testid': 'responsive-bar' },
+      _owner: null,
+    };
+  },
+}));
+
 beforeEach(() => {
   useRouter.mockReturnValue({
     push: jest.fn(),

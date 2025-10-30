@@ -21,8 +21,8 @@ describe('MainLayout component', () => {
     usePathname.mockReturnValue('/movies');
     const { rerender } = render(<MainLayout />);
 
-    const moviesLink = screen.getByTestId('movies-link');
-    const ratedMoviesLink = screen.getByTestId('rated-movies-link');
+    const moviesLink = screen.getByTestId('/movies-link');
+    const ratedMoviesLink = screen.getByTestId('/rated-movies-link');
 
     expect(moviesLink).toHaveClass('nav-item active');
     expect(ratedMoviesLink.classList).not.toContain('active');
@@ -31,8 +31,8 @@ describe('MainLayout component', () => {
     usePathname.mockReturnValue('/rated-movies');
     rerender(<MainLayout />);
 
-    expect(screen.getByTestId('movies-link')).not.toHaveClass('active');
-    expect(screen.getByTestId('rated-movies-link')).toHaveClass('active');
+    expect(screen.getByTestId('/movies-link')).not.toHaveClass('active');
+    expect(screen.getByTestId('/rated-movies-link')).toHaveClass('active');
 
     usePathname.mockReturnValue('/movies');
     await userEvent.click(screen.getByTestId('logo-link'));
