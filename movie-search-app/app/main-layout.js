@@ -11,10 +11,10 @@ import { usePathname } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
 
 const links = [
-  { href: 'movies', label: 'Movies' },
-  { href: 'rated-movies', label: 'Rated movies' },
-  { href: 'new-trailers', label: 'New trailers' },
-  { href: 'search', label: 'Search' },
+  { href: '/movies', label: 'Movies' },
+  { href: '/rated-movies', label: 'Rated movies' },
+  { href: '/new-trailers', label: 'New trailers' },
+  { href: '/search', label: 'Search' },
 ];
 
 export function MainLayout({ children }) {
@@ -69,7 +69,7 @@ export function MainLayout({ children }) {
             <Link
               key={idx}
               href={link.href}
-              className={pathname == `/${link.href}` ? 'nav-item active ' : 'nav-item'}
+              className={pathname == `${link.href}` ? 'nav-item active ' : 'nav-item'}
               data-testid={`${link.href}-link`}
             >
               {link.label}
