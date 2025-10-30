@@ -39,8 +39,8 @@ export default function Movie() {
 
   const [minInfo, setMinInfo] = useState(null);
   const [movieInfo, setMovieInfo] = useState(emptyInfo);
-
   const [trailer, setTrailer] = useState(false);
+  const [errorId, setErrorId] = useState(false);
 
   const getMovieInfo = async () => {
     if (!id) return;
@@ -83,27 +83,31 @@ export default function Movie() {
   }, [id]);
 
   useEffect(() => {
-    checkTrailer();
+    if (movieInfo.original_title && movieInfo.original_title !== '-') {
+      checkTrailer();
 
-    const minObj = {
-      adult: movieInfo.adult,
-      backdrop_path: movieInfo.backdrop_path,
-      genre_ids: movieInfo.genres.map((item) => item.id),
-      id: movieInfo.id,
-      original_language: movieInfo.original_language,
-      original_title: movieInfo.original_title,
-      overview: movieInfo.overview,
-      popularity: movieInfo.popularity,
-      poster_path: movieInfo.poster_path,
-      release_date: movieInfo.release_date,
-      title: movieInfo.title,
-      video: movieInfo.video,
-      vote_average: movieInfo.vote_average,
-      vote_count: movieInfo.vote_count,
-    };
+      const minObj = {
+        adult: movieInfo.adult,
+        backdrop_path: movieInfo.backdrop_path,
+        genre_ids: movieInfo.genres.map((item) => item.id),
+        id: movieInfo.id,
+        original_language: movieInfo.original_language,
+        original_title: movieInfo.original_title,
+        overview: movieInfo.overview,
+        popularity: movieInfo.popularity,
+        poster_path: movieInfo.poster_path,
+        release_date: movieInfo.release_date,
+        title: movieInfo.title,
+        video: movieInfo.video,
+        vote_average: movieInfo.vote_average,
+        vote_count: movieInfo.vote_count,
+      };
 
-    setMinInfo(minObj);
-    document.title = `${movieInfo.original_title} | ArrowFlicks`;
+      setMinInfo(minObj);
+      document.title = `${movieInfo.original_title} | ArrowFlicks`;
+    } else {
+      setErrorId(true);
+    }
   }, [movieInfo]);
 
   const dateOptions = {
@@ -112,11 +116,11 @@ export default function Movie() {
     day: 'numeric',
   };
   const date = new Date(movieInfo.release_date);
-  const premiereDate = date.toLocaleString('en-US', dateOptions);
-  const duration = `${Math.floor(movieInfo.runtime / 60)}h  ${movieInfo.runtime % 60}m`;
-  const budget = `$${movieInfo.budget.toLocaleString()}`;
-  const revenue = `$${movieInfo.revenue.toLocaleString()}`;
-  const genres = movieInfo.genres.map((item) => item.name).join(', ');
+  const premiereDate = movieInfo.release_date ? date.toLocaleString('en-US', dateOptions) : '';
+  const duration = movieInfo.runtime ? `${Math.floor(movieInfo.runtime / 60)}h  ${movieInfo.runtime % 60}m` : '';
+  const budget = movieInfo.budget ? `$${movieInfo.budget.toLocaleString()}` : '-';
+  const revenue = movieInfo.revenue ? `$${movieInfo.revenue.toLocaleString()}` : '-';
+  const genres = movieInfo.genres?.map((item) => item.name).join(', ');
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40, justifyItems: 'center' }}>
@@ -143,11 +147,11 @@ export default function Movie() {
               {movieInfo.original_title}
             </Title>
             <Text mt={8} mb={8} c={'#7b7c88'}>
-              {movieInfo.release_date.slice(0, 4)}
+              {movieInfo.release_date?.slice(0, 4)}
             </Text>
             <Flex gap={7}>
               <img src="/star.svg" alt="star" width={22} />
-              <Text fw={600}>{movieInfo.vote_average.toFixed(1)}</Text>
+              <Text fw={600}>{movieInfo.vote_average?.toFixed(1)}</Text>
               <Text c={'#7b7c88'}>({movieInfo.vote_count})</Text>
             </Flex>
           </Flex>
@@ -216,6 +220,12 @@ export default function Movie() {
                 </Flex>
               ))}
             </Flex>
+          </>
+        ) : null}
+
+        {errorId ? (
+          <>
+            <Title order={4}>There is no movie with this ID yet.</Title>
           </>
         ) : null}
       </Flex>
